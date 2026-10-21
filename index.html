@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="novel-build" content="20261021-221557-fa762dc7">
+  <meta name="novel-build" content="20261021-222822-371f1901">
   <title>Detective</title>
   <style>
     * { box-sizing: border-box; }
@@ -59,9 +59,9 @@
       console.error(error);
     }
     const config = {
-      dataUrl: 'Build/BUILD.data',
-      frameworkUrl: 'Build/BUILD.framework.js',
-      codeUrl: 'Build/BUILD.wasm',
+      dataUrl: 'Build/Build2.data',
+      frameworkUrl: 'Build/Build2.framework.js',
+      codeUrl: 'Build/Build2.wasm',
       streamingAssetsUrl: 'StreamingAssets',
       companyName: "DefaultCompany",
       productName: "Detective",
@@ -72,7 +72,7 @@
       showBanner: (text, type) => { if (type === 'error') fail(text); else console.warn(text); }
     };
     const loader = document.createElement('script');
-    loader.src = 'Build/BUILD.loader.js';
+    loader.src = 'Build/Build2.loader.js';
     loader.onerror = () => fail('Unity loader unavailable');
     loader.onload = () => createUnityInstance(canvas, config, value => {
       document.getElementById('progress').value = value;
