@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="novel-build" content="20261021-222822-371f1901">
+  <meta name="novel-build" content="20261022-003518-e6c0cf3f">
   <title>Detective</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #090c14; color: #fff; font-family: system-ui, sans-serif; }
-    #game { position: fixed; inset: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; background: #090c14; color: #fff; font-family: system-ui, sans-serif; }
+    #game { position: fixed; left: 0; top: 0; width: 100%; height: 100%; height: 100dvh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
     #unity-canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
     #status { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 16px; padding: 24px; background: #090c14; }
     #status[hidden] { display: none; }
@@ -33,6 +34,21 @@
     const canvas = document.getElementById('unity-canvas');
     const status = document.getElementById('status');
     const message = document.getElementById('message');
+    // visualViewport учитывает адресную строку, масштаб страницы и доступную область на телефоне.
+    function fitVisibleViewport() {
+      const viewport = window.visualViewport;
+      const game = document.getElementById('game');
+      game.style.width = (viewport ? viewport.width : window.innerWidth) + 'px';
+      game.style.height = (viewport ? viewport.height : window.innerHeight) + 'px';
+      game.style.left = (viewport ? viewport.offsetLeft : 0) + 'px';
+      game.style.top = (viewport ? viewport.offsetTop : 0) + 'px';
+    }
+    fitVisibleViewport();
+    window.addEventListener('resize', fitVisibleViewport);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitVisibleViewport);
+      window.visualViewport.addEventListener('scroll', fitVisibleViewport);
+    }
     window.novelUpdates = { start() {
       if (this.started) return;
       this.started = true;
@@ -59,9 +75,9 @@
       console.error(error);
     }
     const config = {
-      dataUrl: 'Build/Build2.data',
-      frameworkUrl: 'Build/Build2.framework.js',
-      codeUrl: 'Build/Build2.wasm',
+      dataUrl: 'Build/Build3.data',
+      frameworkUrl: 'Build/Build3.framework.js',
+      codeUrl: 'Build/Build3.wasm',
       streamingAssetsUrl: 'StreamingAssets',
       companyName: "DefaultCompany",
       productName: "Detective",
@@ -72,7 +88,7 @@
       showBanner: (text, type) => { if (type === 'error') fail(text); else console.warn(text); }
     };
     const loader = document.createElement('script');
-    loader.src = 'Build/Build2.loader.js';
+    loader.src = 'Build/Build3.loader.js';
     loader.onerror = () => fail('Unity loader unavailable');
     loader.onload = () => createUnityInstance(canvas, config, value => {
       document.getElementById('progress').value = value;
